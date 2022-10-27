@@ -1,15 +1,19 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { addTask } from "../../features/tasks/taskSlice";
 import {v4 as uuid} from 'uuid'
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { RootState } from "../../app/store";
 
 const TaskForm = () => {
-    const [task, setTask] = useState({
+    const [task, setTask] = useState<any>({
         title: '',
         description: ''
     })
+    const {id} = useParams();
 
+    const tasks = useSelector((state: RootState) => state.tasks)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -26,10 +30,16 @@ const TaskForm = () => {
         navigate('/')
     }
 
+    useEffect(()=>{
+        if(id) {
+            setTask(tasks.find(task => task.id === id))
+        }
+    },[])    
+
     return(
         <form>
-            <input name="title" type="text" placeholder="title" onChange={handleChange}/>
-            <textarea name="description" placeholder="description" onChange={handleChange}></textarea>
+            <input name="title" type="text" placeholder="title" onChange={handleChange} value={task.title}/>
+            <textarea name="description" placeholder="description" onChange={handleChange} value={task.description}></textarea>
             <button onClick={handleSubmit}>Save</button>
         </form>
     )
