@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import type { RootState } from "../../app/store";
-import { deleteTask, editTask } from "../../features/tasks/taskSlice";
+import { deleteTask } from "../../features/tasks/taskSlice";
  
 const TasksList = () => {
     const tasks = useSelector((state: RootState) => state.tasks)
@@ -10,10 +10,6 @@ const TasksList = () => {
 
     const handleDelete = (id: string) =>{
         dispatch(deleteTask(id))
-    }
-
-    const handleEdit = (id: string) => {
-        dispatch(editTask(id))
     }
 
     return (
@@ -30,8 +26,8 @@ const TasksList = () => {
                         <h3>{task.title}</h3>
                         <p>{task.description}</p>
                         <div>
-                            <button onClick={()=>{handleEdit(task.id)}}>Edit</button>
                             <button onClick={()=>{handleDelete(task.id)}}>Delete</button>
+                            <Link to={`/create-task/${task.id}`}>Edit</Link>
                         </div>
                     </div>
                 ))
