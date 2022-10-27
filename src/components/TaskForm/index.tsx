@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTask } from "../../features/tasks/taskSlice";
 import {v4 as uuid} from 'uuid'
+import { useNavigate } from "react-router";
 
 const TaskForm = () => {
     const [task, setTask] = useState({
@@ -10,6 +11,7 @@ const TaskForm = () => {
     })
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
        setTask({
@@ -21,6 +23,7 @@ const TaskForm = () => {
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         dispatch(addTask({...task, id: uuid()}))
+        navigate('/')
     }
 
     return(
