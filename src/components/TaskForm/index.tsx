@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask } from "../../features/tasks/taskSlice";
+import { addTask, editTask } from "../../features/tasks/taskSlice";
 import {v4 as uuid} from 'uuid'
 import { useNavigate, useParams } from "react-router";
 import { RootState } from "../../app/store";
@@ -26,7 +26,11 @@ const TaskForm = () => {
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        dispatch(addTask({...task, id: uuid()}))
+        if(id){
+            dispatch(editTask(task));
+        }else{
+            dispatch(addTask({...task, id: uuid()}))
+        }
         navigate('/')
     }
 
